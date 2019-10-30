@@ -1,29 +1,41 @@
 import React, { useCallback } from "react";
+import db from "../base";
+import "../App.css";
 
 const SignUp = ({ history }) => {
-  const redirectSignUp = () => {
-    history.push("/signup");
+  const handleSignUp = event => {
+    event.preventDefault();
+    const { email, password } = event.target.elements;
+
+    try {
+      db.auth().createUserWithEmailAndPassword(email.value, password.value);
+      history.push("/");
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const redirectLogIn = () => {
+    history.push("/home");
   };
 
   return (
     <div className="centered">
-      <div className="row">
-        <h1>Sign Up</h1>
-        <form>
-          <label>
-            Email
-            <input name="email" type="email" placeholder="Email" />
-          </label>
-          <lable>
-            Password
-            <input name="password" type="password" placeholder="Password" />
-          </lable>
-          <button type="submit">Sign Up</button>
-        </form>
-        <button onClick={redirectSignUp}>Log In</button>
-      </div>
+      <h1>Sign Up</h1>
+      <form onSubmit={handleSignUp}>
+        <label>
+          Email
+          <input name="email" type="email" placeholder="Email" />
+        </label>
+        <lable>
+          Password
+          <input name="password" type="password" placeholder="Password" />
+        </lable>
+        <button type="submit">Sign Up</button>
+      </form>
+      <button onClick={redirectLogIn}>Log In</button>
     </div>
   );
 };
 
-export default SingUp;
+export default SignUp;
